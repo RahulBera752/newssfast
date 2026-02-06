@@ -13,7 +13,6 @@ const Footer = () => {
     >
       <div className="container">
         <div className="row">
-
           {/* Brand */}
           <div className="col-lg-3 col-md-6 mb-4">
             <h2 className="fw-bold mb-3" style={{ fontSize: 28 }}>
@@ -57,12 +56,12 @@ const Footer = () => {
           <div className="col-lg-3 col-md-6 mb-4">
             <h5 className="fw-semibold mb-3">SOCIAL</h5>
 
-            <div className="d-flex mb-4">
+            <div className="d-flex mb-4 gap-2">
               <a
                 href="https://facebook.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="me-3 social-icon"
+                className="social-icon"
               >
                 <FaFacebookF size={16} />
               </a>
@@ -71,7 +70,7 @@ const Footer = () => {
                 href="https://instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="me-3 social-icon"
+                className="social-icon"
               >
                 <FaInstagram size={16} />
               </a>
@@ -80,7 +79,7 @@ const Footer = () => {
                 href="https://twitter.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="me-3 social-icon"
+                className="social-icon"
               >
                 <FaTwitter size={16} />
               </a>
@@ -108,7 +107,9 @@ const Footer = () => {
             </p>
           </div>
           <div className="col-md-4 text-md-end">
-            <Link to="/help-center" className="footer-link">Help Center</Link>
+            <Link to="/help-center" className="footer-link">
+              Help Center
+            </Link>
           </div>
         </div>
       </div>
