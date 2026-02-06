@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { FaFacebookF, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 
 const Footer = () => {
   return (
@@ -52,9 +53,18 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* CONTACT */}
+          {/* SOCIAL (FIXED – no <a>) */}
           <div className="col-lg-3 col-md-6 mb-4">
-            <h5 className="fw-semibold mb-3">CONTACT</h5>
+            <h5 className="fw-semibold mb-3">SOCIAL</h5>
+
+            <div className="d-flex mb-4">
+              <span className="me-3 social-icon"><FaFacebookF size={16} /></span>
+              <span className="me-3 social-icon"><FaInstagram size={16} /></span>
+              <span className="me-3 social-icon"><FaTwitter size={16} /></span>
+              <span className="social-icon"><FaYoutube size={16} /></span>
+            </div>
+
+            <h6 className="fw-semibold mb-2">Mail Us</h6>
             <p style={{ fontSize: 13, color: "#9ca3af" }}>newsfast@gmail.com</p>
             <p style={{ fontSize: 13, color: "#9ca3af" }}>033-98654422</p>
           </div>
@@ -81,6 +91,22 @@ const Footer = () => {
         .footer-link:hover {
           color: #fff;
           padding-left: 4px;
+        }
+        .social-icon {
+          width: 36px;
+          height: 36px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 50%;
+          background: rgba(255,255,255,0.08);
+          color: #e5e7eb;
+          transition: 0.25s;
+          cursor: pointer;
+        }
+        .social-icon:hover {
+          background: rgba(255,255,255,0.2);
+          transform: translateY(-2px);
         }
       `}</style>
     </footer>
