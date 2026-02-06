@@ -13,6 +13,7 @@ const Footer = () => {
     >
       <div className="container">
         <div className="row">
+
           {/* Brand */}
           <div className="col-lg-3 col-md-6 mb-4">
             <h2 className="fw-bold mb-3" style={{ fontSize: 28 }}>
@@ -52,46 +53,15 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* SOCIAL */}
+          {/* SOCIAL (NO <a> TAGS NOW) */}
           <div className="col-lg-3 col-md-6 mb-4">
             <h5 className="fw-semibold mb-3">SOCIAL</h5>
 
-            <div className="d-flex mb-4 gap-2">
-              <a
-                href="https://facebook.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="social-icon"
-              >
-                <FaFacebookF size={16} />
-              </a>
-
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="social-icon"
-              >
-                <FaInstagram size={16} />
-              </a>
-
-              <a
-                href="https://twitter.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="social-icon"
-              >
-                <FaTwitter size={16} />
-              </a>
-
-              <a
-                href="https://youtube.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="social-icon"
-              >
-                <FaYoutube size={16} />
-              </a>
+            <div className="d-flex mb-4">
+              <span className="me-3 social-icon"><FaFacebookF /></span>
+              <span className="me-3 social-icon"><FaInstagram /></span>
+              <span className="me-3 social-icon"><FaTwitter /></span>
+              <span className="social-icon"><FaYoutube /></span>
             </div>
 
             <h6 className="fw-semibold mb-2">Mail Us</h6>
@@ -107,9 +77,7 @@ const Footer = () => {
             </p>
           </div>
           <div className="col-md-4 text-md-end">
-            <Link to="/help-center" className="footer-link">
-              Help Center
-            </Link>
+            <Link to="/help-center" className="footer-link">Help Center</Link>
           </div>
         </div>
       </div>
@@ -134,6 +102,7 @@ const Footer = () => {
           background: rgba(255,255,255,0.08);
           color: #e5e7eb;
           transition: 0.25s;
+          cursor: pointer;
         }
         .social-icon:hover {
           background: rgba(255,255,255,0.2);
