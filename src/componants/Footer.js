@@ -58,43 +58,42 @@ const Footer = () => {
             <h5 className="fw-semibold mb-3">SOCIAL</h5>
 
             <div className="d-flex mb-4">
-  <a
-    href="https://facebook.com"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="me-3 social-icon"
-  >
-    <FaFacebookF size={16} />
-  </a>
+              <a
+                href="https://facebook.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="me-3 social-icon"
+              >
+                <FaFacebookF size={16} />
+              </a>
 
-  <a
-    href="https://instagram.com"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="me-3 social-icon"
-  >
-    <FaInstagram size={16} />
-  </a>
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="me-3 social-icon"
+              >
+                <FaInstagram size={16} />
+              </a>
 
-  <a
-    href="https://twitter.com"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="me-3 social-icon"
-  >
-    <FaTwitter size={16} />
-  </a>
+              <a
+                href="https://twitter.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="me-3 social-icon"
+              >
+                <FaTwitter size={16} />
+              </a>
 
-  <a
-    href="https://youtube.com"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="social-icon"
-  >
-    <FaYoutube size={16} />
-  </a>
-</div>
-
+              <a
+                href="https://youtube.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="social-icon"
+              >
+                <FaYoutube size={16} />
+              </a>
+            </div>
 
             <h6 className="fw-semibold mb-2">Mail Us</h6>
             <p style={{ fontSize: 13, color: "#9ca3af" }}>newsfast@gmail.com</p>
