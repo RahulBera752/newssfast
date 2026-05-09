@@ -3,16 +3,18 @@ import NewsItem from "./NwesItem";
 import Spinner from "./Spinner";
 import { useNavigate } from "react-router-dom";
 
-/* 🔤 LETTER-BY-LETTER TYPEWRITER HOOK */
+/* 🔤 TYPEWRITER */
 const useTypewriter = (text, speed = 80) => {
   const [displayText, setDisplayText] = useState("");
 
   useEffect(() => {
     let index = 0;
+
     setDisplayText("");
 
     const interval = setInterval(() => {
       setDisplayText((prev) => prev + text.charAt(index));
+
       index++;
 
       if (index >= text.length) {
@@ -26,14 +28,18 @@ const useTypewriter = (text, speed = 80) => {
   return displayText;
 };
 
-const Home = ({ searchQuery, setSearchQuery, onArticleClick }) => {
+const Home = ({
+  searchQuery,
+  setSearchQuery,
+  onArticleClick,
+}) => {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
+
   const navigate = useNavigate();
 
-
   const typedText = useTypewriter(
-    "SStay Updated with NewsFast",
+    "Stay Updated with NewsFast",
     90
   );
 
@@ -43,10 +49,14 @@ const Home = ({ searchQuery, setSearchQuery, onArticleClick }) => {
     const fetchBlogs = async () => {
       try {
         const res = await fetch(
-          "https://sample-api-black.vercel.app/api/v1/blogs"
+          `https://newsdata.io/api/1/news?apikey=pub_14e993d63a8045c284641f99eba3d175&country=in&language=en`
         );
+
         const data = await res.json();
-        setBlogs(data.blogs || []);
+
+        console.log(data);
+
+        setBlogs(data.results || []);
       } catch (err) {
         console.error(err);
       } finally {
@@ -61,22 +71,26 @@ const Home = ({ searchQuery, setSearchQuery, onArticleClick }) => {
 
   const matchesSearch = (b) => {
     if (!q) return true;
+
     const text = `
-      ${b.title}
-      ${b.description}
-      ${b.content}
-      ${b.content_text}
-      ${b.category}
+      ${b.title || ""}
+      ${b.description || ""}
+      ${b.content || ""}
+      ${b.category || ""}
     `.toLowerCase();
+
     return text.includes(q);
   };
 
-  const filteredBlogs = q ? blogs.filter(matchesSearch) : blogs.slice(0, 12);
+  const filteredBlogs = q
+    ? blogs.filter(matchesSearch)
+    : blogs.slice(0, 12);
+
   const suggestedBlogs = blogs.slice(0, 3);
 
   return (
     <>
-      {/* 🔥 PREMIUM HERO */}
+      {/* HERO */}
       <section
         className="text-light text-center py-5 mt-5"
         style={{
@@ -97,64 +111,16 @@ const Home = ({ searchQuery, setSearchQuery, onArticleClick }) => {
           </h1>
 
           <p className="lead opacity-75 mb-4">
-            Technology • Design • Lifestyle
+            Technology • Business • Sports
           </p>
 
           {/* CATEGORY BUTTONS */}
           <div className="d-flex justify-content-center gap-3 flex-wrap">
-            {["technology", "design", "lifestyle"].map((cat) => (
-              <button
-                key={cat}
-                className="btn btn-outline-light rounded-pill px-4"
-                onClick={() => {
-                  setSearchQuery("");
-                  navigate(`/${cat}`);
-                }}
-              >
-                {cat.toUpperCase()}
-              </button>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 🔍 CONTENT */}
-      <section className="container my-5">
-        <h2
-  className="text-center mb-3 fw-bold"
-  style={{
-    color: "#e5e7eb",
-    letterSpacing: "0.5px",
-    textShadow: "0 4px 20px rgba(0,0,0,0.6)",
-  }}
->
-  {q ? "Search Results" : "Latest Articles"}
-</h2>
-
-
-        {q && !loading && (
-          <p className="text-center text-muted mb-4">
-            {filteredBlogs.length} result
-            {filteredBlogs.length !== 1 && "s"} found for "{searchQuery}"
-          </p>
-        )}
-
-        {loading && <Spinner />}
-
-        {/* NO RESULTS */}
-        {!loading && q && filteredBlogs.length === 0 && (
-          <div className="text-center">
-            <p className="text-danger fs-5">
-              No results found for "{searchQuery}"
-            </p>
-
-            <p className="fw-semibold mt-3">You can try:</p>
-
-            <div className="d-flex justify-content-center gap-3 mb-4">
-              {["technology", "design", "lifestyle"].map((cat) => (
+            {["technology", "business", "sports"].map(
+              (cat) => (
                 <button
                   key={cat}
-                  className="btn btn-outline-primary rounded-pill px-4"
+                  className="btn btn-outline-light rounded-pill px-4"
                   onClick={() => {
                     setSearchQuery("");
                     navigate(`/${cat}`);
@@ -162,27 +128,101 @@ const Home = ({ searchQuery, setSearchQuery, onArticleClick }) => {
                 >
                   {cat.toUpperCase()}
                 </button>
-              ))}
-            </div>
-
-            <h5 className="mb-4">Popular Articles</h5>
-            <div className="row justify-content-center">
-              {suggestedBlogs.map((blog) => (
-                <div className="col-md-4 mb-4" key={blog.id}>
-                  <NewsItem
-                    article={blog}
-                    onArticleClick={onArticleClick}
-                  />
-                </div>
-              ))}
-            </div>
+              )
+            )}
           </div>
+        </div>
+      </section>
+
+      {/* CONTENT */}
+      <section className="container my-5">
+        <h2
+          className="text-center mb-3 fw-bold"
+          style={{
+            color: "#e5e7eb",
+            letterSpacing: "0.5px",
+            textShadow:
+              "0 4px 20px rgba(0,0,0,0.6)",
+          }}
+        >
+          {q ? "Search Results" : "Latest Articles"}
+        </h2>
+
+        {q && !loading && (
+          <p className="text-center text-muted mb-4">
+            {filteredBlogs.length} result
+            {filteredBlogs.length !== 1 &&
+              "s"}{" "}
+            found for "{searchQuery}"
+          </p>
         )}
 
-        {/* ARTICLE GRID */}
+        {loading && <Spinner />}
+
+        {/* NO RESULTS */}
+        {!loading &&
+          q &&
+          filteredBlogs.length === 0 && (
+            <div className="text-center">
+              <p className="text-danger fs-5">
+                No results found for "
+                {searchQuery}"
+              </p>
+
+              <p className="fw-semibold mt-3">
+                You can try:
+              </p>
+
+              <div className="d-flex justify-content-center gap-3 mb-4">
+                {[
+                  "technology",
+                  "business",
+                  "sports",
+                ].map((cat) => (
+                  <button
+                    key={cat}
+                    className="btn btn-outline-primary rounded-pill px-4"
+                    onClick={() => {
+                      setSearchQuery("");
+                      navigate(`/${cat}`);
+                    }}
+                  >
+                    {cat.toUpperCase()}
+                  </button>
+                ))}
+              </div>
+
+              <h5 className="mb-4">
+                Popular Articles
+              </h5>
+
+              <div className="row justify-content-center">
+                {suggestedBlogs.map(
+                  (blog, index) => (
+                    <div
+                      className="col-md-4 mb-4"
+                      key={index}
+                    >
+                      <NewsItem
+                        article={blog}
+                        onArticleClick={
+                          onArticleClick
+                        }
+                      />
+                    </div>
+                  )
+                )}
+              </div>
+            </div>
+          )}
+
+        {/* ARTICLES */}
         <div className="row">
-          {filteredBlogs.map((blog) => (
-            <div className="col-md-4 mb-4" key={blog.id}>
+          {filteredBlogs.map((blog, index) => (
+            <div
+              className="col-md-4 mb-4"
+              key={index}
+            >
               <NewsItem
                 article={blog}
                 onArticleClick={onArticleClick}
@@ -192,7 +232,7 @@ const Home = ({ searchQuery, setSearchQuery, onArticleClick }) => {
         </div>
       </section>
 
-      {/* ✨ CURSOR ANIMATION */}
+      {/* CURSOR */}
       <style>{`
         .typing-cursor {
           display: inline-block;
@@ -203,8 +243,13 @@ const Home = ({ searchQuery, setSearchQuery, onArticleClick }) => {
         }
 
         @keyframes blink {
-          0%, 50%, 100% { opacity: 1; }
-          25%, 75% { opacity: 0; }
+          0%, 50%, 100% {
+            opacity: 1;
+          }
+
+          25%, 75% {
+            opacity: 0;
+          }
         }
       `}</style>
     </>

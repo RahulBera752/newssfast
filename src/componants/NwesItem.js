@@ -9,39 +9,60 @@ const NewsItem = ({ article, onArticleClick }) => {
   const {
     title,
     description,
-    image,
-    author,
-    createdAt,
+    image_url,
+    source_id,
+    pubDate,
     category,
+    link,
   } = article;
 
   const validImage =
-    image && image.startsWith("http") ? image : FALLBACK_IMAGE;
+    image_url && image_url.startsWith("http")
+      ? image_url
+      : FALLBACK_IMAGE;
 
   return (
     <div
       className="premium-card h-100"
-      onClick={() => onArticleClick(article)}
+      onClick={() =>
+        link
+          ? window.open(link, "_blank")
+          : onArticleClick(article)
+      }
+      style={{ cursor: "pointer" }}
     >
       {/* CATEGORY */}
       <span className="premium-badge">
-        {category}
+        {Array.isArray(category)
+          ? category[0]
+          : category || "NEWS"}
       </span>
 
+      {/* IMAGE */}
       <img
         src={validImage}
         alt={title}
         className="premium-img"
-        onError={(e) => (e.target.src = FALLBACK_IMAGE)}
+        onError={(e) => {
+          e.target.src = FALLBACK_IMAGE;
+        }}
       />
 
+      {/* BODY */}
       <div className="premium-body">
         <h5>{title}</h5>
-        <p>{description?.slice(0, 100)}...</p>
+
+        <p>
+          {description
+            ? description.slice(0, 100) + "..."
+            : "Latest breaking news update."}
+        </p>
 
         <small>
-          By {author || "Admin"}{" "}
-          {createdAt && `• ${new Date(createdAt).toDateString()}`}
+          {source_id || "News Source"}
+
+          {pubDate &&
+            ` • ${new Date(pubDate).toDateString()}`}
         </small>
 
         <button className="premium-btn">
