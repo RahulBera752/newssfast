@@ -1,28 +1,89 @@
-# 📰 NewsFast
+# NewsFast
 
-**Live Demo:** https://newsfastt-k2uw.vercel.app/
+## Project Explanation
 
-NewsFast is a modern and responsive news web application built with React that allows users to browse, search, and read articles by category. It features an elegant UI, modal-based article view, and smooth navigation — perfect for portfolio or production use.
+NewsFast is a responsive news web application that fetches and displays real-time news articles using the NewsData API. Users can browse news by categories such as Technology, Business, Sports, and Lifestyle, and search articles using keywords.
 
----
+The application dynamically retrieves the latest news and displays article details in a clean and user-friendly interface. It also includes loading states and error handling to improve user experience.
 
-## 🚀 Features
-
-- Browse latest articles on the homepage
+Features:
+- Fetch latest news from a public API
+- Browse articles by category
 - Search articles by keywords
-- Category-based navigation (Technology, Design, Lifestyle, etc.)
-- Read full articles in a modal with image and metadata
-- Clean, responsive UI with premium styling
-- Footer with site links and contact info
-- Deployed using Vercel for production
+- Loading spinner while fetching data
+- Error handling for failed API requests
+- Responsive UI design
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack Used
 
-- **React** (Create React App)  
-- **React Router DOM** for client-side routing  
-- **Bootstrap** + custom CSS for responsive UI  
-- **Vercel** for deployment  
-- **GitHub** for source control  
-- **REST API** for fetching article data
+Frontend:
+- React.js
+- JavaScript (ES6+)
+- HTML5
+- CSS3
+- Bootstrap
+- React Router DOM
+
+API:
+- NewsData API
+
+React Concepts:
+- useState
+- useEffect
+- useMemo
+- useNavigate
+- useParams
+
+Tools:
+- Fetch API
+- npm
+
+---
+
+## How to Run the Project
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/RahulBera752/newssfast.git
+```
+
+### 2. Navigate to the project folder
+
+```bash
+cd newssfast
+```
+
+### 3. Install dependencies
+
+```bash
+npm install
+```
+
+### 4. Add your NewsData API key
+
+Replace the API key inside `Home.js` and `News.jsx`
+
+Example:
+
+```js
+apikey=YOUR_NEWSDATA_API_KEY
+```
+
+Get API key from:
+
+https://newsdata.io
+
+### 5. Start the application
+
+```bash
+npm start
+```
+
+### 6. Open in browser
+
+```txt
+http://localhost:3000
+```
