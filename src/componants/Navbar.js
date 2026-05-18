@@ -1,7 +1,11 @@
 import React, { useMemo, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
-const CATEGORIES = ["technology", "design", "lifestyle"];
+const CATEGORIES = [
+  "technology",
+  "business",
+  "lifestyle"
+];
 
 const Navbar = ({ searchQuery, setSearchQuery, blogs = [] }) => {
   const [showSuggestions, setShowSuggestions] = useState(false);

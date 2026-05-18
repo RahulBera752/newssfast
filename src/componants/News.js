@@ -8,23 +8,34 @@ const News = ({ searchQuery, onArticleClick }) => {
 
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     document.title = `NewsFast – ${category}`;
 
     const fetchBlogs = async () => {
       try {
+        setLoading(true);
+        setError("");
+
         const res = await fetch(
-          `https://newsdata.io/api/1/news?apikey=pub_14e993d63a8045c284641f99eba3d175&country=in&language=en&category=${category}`
+          `https://newsdata.io/api/1/news?apikey=pub_e559087845e6452eb2c1f17fc8eec447&country=in&language=en&category=${category}`
         );
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch news");
+        }
 
         const data = await res.json();
 
         console.log(data);
 
-        setBlogs(data.results || []);
+        // guarantee array
+        setBlogs(Array.isArray(data.results) ? data.results : []);
       } catch (err) {
         console.error(err);
+        setError("Unable to load articles. Please try again.");
+        setBlogs([]);
       } finally {
         setLoading(false);
       }
@@ -35,18 +46,20 @@ const News = ({ searchQuery, onArticleClick }) => {
 
   const q = searchQuery?.toLowerCase().trim();
 
-  const filteredBlogs = q
-    ? blogs.filter((b) => {
-        const text = `
-          ${b.title || ""}
-          ${b.description || ""}
-          ${b.content || ""}
-          ${b.category || ""}
-        `.toLowerCase();
+  const filteredBlogs = Array.isArray(blogs)
+    ? q
+      ? blogs.filter((b) => {
+          const text = `
+            ${b.title || ""}
+            ${b.description || ""}
+            ${b.content || ""}
+            ${(b.category || []).join(" ")}
+          `.toLowerCase();
 
-        return text.includes(q);
-      })
-    : blogs;
+          return text.includes(q);
+        })
+      : blogs
+    : [];
 
   return (
     <section
@@ -67,7 +80,6 @@ const News = ({ searchQuery, onArticleClick }) => {
         {category} Articles
       </h2>
 
-      {/* RESULT COUNT */}
       {q && !loading && (
         <p className="text-center text-muted mb-4">
           {filteredBlogs.length} result
@@ -77,23 +89,37 @@ const News = ({ searchQuery, onArticleClick }) => {
 
       {loading && <Spinner />}
 
-      {/* NO RESULTS */}
-      {!loading && q && filteredBlogs.length === 0 && (
+      {error && (
         <p className="text-center text-danger fs-5">
+          {error}
+        </p>
+      )}
+
+      {!loading && !error && q && filteredBlogs.length === 0 && (
+        <p className="text-center text-warning fs-5">
           No results found
         </p>
       )}
 
-      {/* ARTICLES */}
+      {!loading &&
+        !error &&
+        filteredBlogs.length === 0 &&
+        !q && (
+          <p className="text-center text-warning fs-5">
+            No articles available
+          </p>
+        )}
+
       <div className="row">
-        {filteredBlogs.map((blog, index) => (
-          <div className="col-md-4 mb-4" key={index}>
-            <NewsItem
-              article={blog}
-              onArticleClick={onArticleClick}
-            />
-          </div>
-        ))}
+        {Array.isArray(filteredBlogs) &&
+          filteredBlogs.map((blog, index) => (
+            <div className="col-md-4 mb-4" key={blog.article_id || index}>
+              <NewsItem
+                article={blog}
+                onArticleClick={onArticleClick}
+              />
+            </div>
+          ))}
       </div>
     </section>
   );

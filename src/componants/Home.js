@@ -3,7 +3,7 @@ import NewsItem from "./NwesItem";
 import Spinner from "./Spinner";
 import { useNavigate } from "react-router-dom";
 
-/* 🔤 TYPEWRITER */
+/* TYPEWRITER */
 const useTypewriter = (text, speed = 80) => {
   const [displayText, setDisplayText] = useState("");
 
@@ -35,6 +35,7 @@ const Home = ({
 }) => {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   const navigate = useNavigate();
 
@@ -48,17 +49,34 @@ const Home = ({
 
     const fetchBlogs = async () => {
       try {
+        setLoading(true);
+        setError("");
+
         const res = await fetch(
-          `https://newsdata.io/api/1/news?apikey=pub_14e993d63a8045c284641f99eba3d175&country=in&language=en`
+          `https://newsdata.io/api/1/news?apikey=pub_e559087845e6452eb2c1f17fc8eec447&country=in&language=en`
         );
+
+        if (!res.ok) {
+          throw new Error("Unable to fetch news");
+        }
 
         const data = await res.json();
 
         console.log(data);
 
-        setBlogs(data.results || []);
+        setBlogs(
+          Array.isArray(data.results)
+            ? data.results
+            : []
+        );
       } catch (err) {
         console.error(err);
+
+        setError(
+          "Unable to load articles. Please try again."
+        );
+
+        setBlogs([]);
       } finally {
         setLoading(false);
       }
@@ -76,17 +94,23 @@ const Home = ({
       ${b.title || ""}
       ${b.description || ""}
       ${b.content || ""}
-      ${b.category || ""}
+      ${(b.category || []).join(" ")}
     `.toLowerCase();
 
     return text.includes(q);
   };
 
-  const filteredBlogs = q
-    ? blogs.filter(matchesSearch)
-    : blogs.slice(0, 12);
+  const filteredBlogs =
+    Array.isArray(blogs)
+      ? q
+        ? blogs.filter(matchesSearch)
+        : blogs.slice(0, 12)
+      : [];
 
-  const suggestedBlogs = blogs.slice(0, 3);
+  const suggestedBlogs =
+    Array.isArray(blogs)
+      ? blogs.slice(0, 3)
+      : [];
 
   return (
     <>
@@ -95,7 +119,7 @@ const Home = ({
         className="text-light text-center py-5 mt-5"
         style={{
           background:
-            "linear-gradient(135deg, #0f2027, #203a43, #2c5364)",
+            "linear-gradient(135deg,#0f2027,#203a43,#2c5364)",
         }}
       >
         <div className="container">
@@ -114,7 +138,6 @@ const Home = ({
             Technology • Business • Sports
           </p>
 
-          {/* CATEGORY BUTTONS */}
           <div className="d-flex justify-content-center gap-3 flex-wrap">
             {["technology", "business", "sports"].map(
               (cat) => (
@@ -151,22 +174,26 @@ const Home = ({
         {q && !loading && (
           <p className="text-center text-muted mb-4">
             {filteredBlogs.length} result
-            {filteredBlogs.length !== 1 &&
-              "s"}{" "}
-            found for "{searchQuery}"
+            {filteredBlogs.length !== 1 && "s"} found for "{searchQuery}"
           </p>
         )}
 
         {loading && <Spinner />}
 
-        {/* NO RESULTS */}
+        {error && (
+          <p className="text-center text-danger fs-5">
+            {error}
+          </p>
+        )}
+
         {!loading &&
+          !error &&
           q &&
           filteredBlogs.length === 0 && (
             <div className="text-center">
+
               <p className="text-danger fs-5">
-                No results found for "
-                {searchQuery}"
+                No results found for "{searchQuery}"
               </p>
 
               <p className="fw-semibold mt-3">
@@ -201,13 +228,11 @@ const Home = ({
                   (blog, index) => (
                     <div
                       className="col-md-4 mb-4"
-                      key={index}
+                      key={blog.article_id || index}
                     >
                       <NewsItem
                         article={blog}
-                        onArticleClick={
-                          onArticleClick
-                        }
+                        onArticleClick={onArticleClick}
                       />
                     </div>
                   )
@@ -216,39 +241,38 @@ const Home = ({
             </div>
           )}
 
-        {/* ARTICLES */}
         <div className="row">
-          {filteredBlogs.map((blog, index) => (
-            <div
-              className="col-md-4 mb-4"
-              key={index}
-            >
-              <NewsItem
-                article={blog}
-                onArticleClick={onArticleClick}
-              />
-            </div>
-          ))}
+          {filteredBlogs.map(
+            (blog, index) => (
+              <div
+                className="col-md-4 mb-4"
+                key={blog.article_id || index}
+              >
+                <NewsItem
+                  article={blog}
+                  onArticleClick={onArticleClick}
+                />
+              </div>
+            )
+          )}
         </div>
       </section>
 
-      {/* CURSOR */}
       <style>{`
-        .typing-cursor {
-          display: inline-block;
-          margin-left: 6px;
-          animation: blink 1s infinite;
-          font-weight: 300;
-          opacity: 0.9;
+        .typing-cursor{
+          display:inline-block;
+          margin-left:6px;
+          animation:blink 1s infinite;
+          font-weight:300;
+          opacity:0.9;
         }
 
-        @keyframes blink {
-          0%, 50%, 100% {
-            opacity: 1;
+        @keyframes blink{
+          0%,50%,100%{
+            opacity:1;
           }
-
-          25%, 75% {
-            opacity: 0;
+          25%,75%{
+            opacity:0;
           }
         }
       `}</style>
