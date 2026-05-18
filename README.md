@@ -1,4 +1,5 @@
 # NewsFast
+Live demo: https://newssfastnews.vercel.app/
 Demo Video:https://youtu.be/XxinQneyeXY
 ## Project Explanation
 
