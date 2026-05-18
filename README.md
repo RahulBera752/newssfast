@@ -1,5 +1,5 @@
 # NewsFast
-
+Demo Video:https://youtu.be/XxinQneyeXY
 ## Project Explanation
 
 NewsFast is a responsive news web application that fetches and displays real-time news articles using the NewsData API. Users can browse news by categories such as Technology, Business, Sports, and Lifestyle, and search articles using keywords.
